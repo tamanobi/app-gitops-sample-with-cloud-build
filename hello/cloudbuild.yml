@@ -51,6 +51,8 @@ steps:
         git clone git@github.com:tamanobi/env-gitops-sample-with-cloud-build
         cd env-gitops-sample-with-cloud-build
         echo 'aaaaaa' >> README.md
+        git config --local user.email "hogehoge@example.com"
+        git config --local user.name "Cloud Build"
         git commit -am'yay'
         git push origin master
     volumes:
