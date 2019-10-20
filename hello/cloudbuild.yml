@@ -13,6 +13,7 @@ steps:
       - "cd ${_ROOT} && docker build -t gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA} ."
 
   - name: "gcr.io/cloud-builders/gcloud"
+    id: Copy ssh key
     args:
       - kms
       - decrypt
@@ -26,6 +27,7 @@ steps:
         path: /root/.ssh
 
   - name: "gcr.io/cloud-builders/git"
+    id: Prepare git clone
     entrypoint: "bash"
     args:
       - "-c"
@@ -41,6 +43,7 @@ steps:
         path: /root/.ssh
 
   - name: "gcr.io/cloud-builders/git"
+    id: Commit env repository and push
     entrypoint: "bash"
     args:
       - "-c"
