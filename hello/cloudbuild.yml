@@ -1,0 +1,16 @@
+steps:
+  - name: "gcr.io/cloud-builders/go"
+    id: Test
+    args:
+      - "test"
+      - "./..."
+    env: ["PROJECT_ROOT=${_ROOT}"]
+  - name: "gcr.io/cloud-builders/docker"
+    id: Build
+    args:
+      - "build"
+      - "-t"
+      - "${_TAG_NAME}"
+      - "."
+    env:
+      - "PROJECT_ROOT=${_ROOT}"
