@@ -10,4 +10,4 @@ steps:
     entrypoint: sh
     args:
       - "-c"
-      - "cd ${_ROOT} && docker build -t gcr.io/$PROJECT_ID/${_ROOT}:${SHORT_SHA} ."
+      - "cd ${_ROOT} && docker build -t gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA} ."
