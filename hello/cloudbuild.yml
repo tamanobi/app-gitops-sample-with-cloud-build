@@ -7,10 +7,9 @@ steps:
     env: ["PROJECT_ROOT=${_ROOT}"]
   - name: "gcr.io/cloud-builders/docker"
     id: Build
+    entrypoint: sh
     args:
-      - "build"
-      - "-t"
-      - "${_TAG_NAME}"
-      - "."
+      - "-c"
+      - "cd ${_ROOT} && docker build -t ${_TAG_NAME} ."
     env:
       - "PROJECT_ROOT=${_ROOT}"
