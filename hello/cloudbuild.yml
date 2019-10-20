@@ -49,9 +49,10 @@ steps:
       - "-c"
       - |
         git clone git@github.com:tamanobi/env-gitops-sample-with-cloud-build
+        cd env-gitops-sample-with-cloud-build
+
         git config --local user.email "hogehoge@example.com"
         git config --local user.name "Cloud Build"
-        cd env-gitops-sample-with-cloud-build
         echo "gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA}" > "${_ROOT}" 
         git add "${_ROOT}"
         git commit -m'Update container image tag by cloud build'
