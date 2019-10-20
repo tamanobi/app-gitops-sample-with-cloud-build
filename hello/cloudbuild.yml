@@ -10,6 +10,6 @@ steps:
     entrypoint: sh
     args:
       - "-c"
-      - "cd ${_ROOT} && docker build -t ${_TAG_NAME} ."
+      - "cd ${_ROOT} && docker build -t gcr.io/$PROJECT_ID/${_APP_NAME}/:${SHORT_SHA} ."
     env:
-      - "PROJECT_ROOT=${_ROOT}"
+      - "_APP_NAME=${_ROOT}"
