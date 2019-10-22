@@ -73,8 +73,10 @@ steps:
     args:
       - '-c'
       - |
-        export GITHUB_TOKEN="{_GITHUB_TOKEN}"
-        ./hub-linux-amd64-2.12.8/bin/hub pull-request -b master -h feature/update-container-image-tag-${SHORT_SHA}
+        GITHUB_TOKEN="${_GITHUB_TOKEN}" ./hub-linux-amd64-2.12.8/bin/hub pull-request \
+          -b master \
+          -h feature/update-container-image-tag-${SHORT_SHA} \
+          -m"Update container image tag by cloud build"
     volumes:
       - name: 'ssh'
         path: /root/.ssh
