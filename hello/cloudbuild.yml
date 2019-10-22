@@ -60,8 +60,6 @@ steps:
         git add "${_ROOT}"
         git commit -m'Update container image tag by cloud build'
 
-        curl -sSL https://github.com/github/hub/releases/download/v2.12.8/hub-linux-amd64-2.12.8.tgz | tar -xzf -
-
         git push origin feature/update-container-image-tag-${SHORT_SHA}
     volumes:
       - name: 'ssh'
@@ -73,6 +71,7 @@ steps:
     args:
       - '-c'
       - |
+        curl -sSL https://github.com/github/hub/releases/download/v2.12.8/hub-linux-amd64-2.12.8.tgz | tar -xzf -
         GITHUB_TOKEN="${_GITHUB_TOKEN}" ./hub-linux-amd64-2.12.8/bin/hub pull-request \
           -b master \
           -h feature/update-container-image-tag-${SHORT_SHA} \
