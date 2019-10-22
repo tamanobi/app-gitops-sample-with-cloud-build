@@ -1,18 +1,18 @@
 steps:
-  - name: "gcr.io/cloud-builders/go"
+  - name: 'gcr.io/cloud-builders/go'
     id: Test
     args:
-      - "test"
-      - "./..."
-    env: ["PROJECT_ROOT=${_ROOT}"]
-  - name: "gcr.io/cloud-builders/docker"
+      - 'test'
+      - './...'
+    env: ['PROJECT_ROOT=${_ROOT}']
+  - name: 'gcr.io/cloud-builders/docker'
     id: Build
     entrypoint: sh
     args:
-      - "-c"
-      - "cd ${_ROOT} && docker build -t gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA} ."
+      - '-c'
+      - 'cd ${_ROOT} && docker build -t gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA} .'
 
-  - name: "gcr.io/cloud-builders/gcloud"
+  - name: 'gcr.io/cloud-builders/gcloud'
     id: Copy ssh key
     args:
       - kms
@@ -23,14 +23,14 @@ steps:
       - --keyring=cloud-build-keyring
       - --key=github-key
     volumes:
-      - name: "ssh"
+      - name: 'ssh'
         path: /root/.ssh
 
-  - name: "gcr.io/cloud-builders/git"
+  - name: 'gcr.io/cloud-builders/git'
     id: Prepare git clone
-    entrypoint: "bash"
+    entrypoint: 'bash'
     args:
-      - "-c"
+      - '-c'
       - |
         chmod 600 /root/.ssh/id_rsa
         cat <<EOF >/root/.ssh/config
@@ -39,24 +39,32 @@ steps:
         EOF
         mv known_hosts /root/.ssh/known_hosts
     volumes:
-      - name: "ssh"
+      - name: 'ssh'
         path: /root/.ssh
 
-  - name: "gcr.io/cloud-builders/git"
+  - name: 'gcr.io/cloud-builders/git'
     id: Commit env repository and push
-    entrypoint: "bash"
+    entrypoint: 'bash'
     args:
-      - "-c"
+      - '-c'
       - |
         git clone git@github.com:tamanobi/env-gitops-sample-with-cloud-build
         cd env-gitops-sample-with-cloud-build
 
         git config --local user.email "hogehoge@example.com"
         git config --local user.name "Cloud Build"
-        echo "gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA}" > "${_ROOT}" 
+
+        echo "gcr.io/$PROJECT_ID/$REPO_NAME/${_ROOT}:${SHORT_SHA}" > "${_ROOT}"
+
+        git checkout -b feature/update-container-image-tag-${SHORT_SHA}
         git add "${_ROOT}"
         git commit -m'Update container image tag by cloud build'
-        git push origin master
+
+        wget https://github.com/github/hub/releases/download/v2.12.8/hub-linux-amd64-2.12.8.tgz
+        tar -xzf hub-linux-amd64-2.12.8.tgz
+
+        git push origin feature/update-container-image-tag-${SHORT_SHA}
+        hub pull-request -b master -h feature/update-container-image-tag-${SHORT_SHA}
     volumes:
-      - name: "ssh"
+      - name: 'ssh'
         path: /root/.ssh
