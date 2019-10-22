@@ -63,7 +63,7 @@ steps:
         curl -sSL https://github.com/github/hub/releases/download/v2.12.8/hub-linux-amd64-2.12.8.tgz | tar -xzf -
 
         git push origin feature/update-container-image-tag-${SHORT_SHA}
-        hub-linux-amd64-2.12.8/bin/hub pull-request -b master -h feature/update-container-image-tag-${SHORT_SHA}
+        GITHUB_TOKEN="{_GITHUB_TOKEN}"; hub-linux-amd64-2.12.8/bin/hub pull-request -b master -h feature/update-container-image-tag-${SHORT_SHA}
     volumes:
       - name: 'ssh'
         path: /root/.ssh
