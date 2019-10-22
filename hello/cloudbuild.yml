@@ -60,7 +60,7 @@ steps:
         git add "${_ROOT}"
         git commit -m'Update container image tag by cloud build'
 
-        curl -SL https://github.com/github/hub/releases/download/v2.12.8/hub-linux-amd64-2.12.8.tgz | tar -xzf
+        curl -SL https://github.com/github/hub/releases/download/v2.12.8/hub-linux-amd64-2.12.8.tgz | tar -xzf -
         ls -al
 
         : git push origin feature/update-container-image-tag-${SHORT_SHA}
