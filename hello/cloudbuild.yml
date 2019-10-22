@@ -64,7 +64,7 @@ steps:
         tar -xzf hub-linux-amd64-2.12.8.tgz
 
         git push origin feature/update-container-image-tag-${SHORT_SHA}
-        hub pull-request -b master -h feature/update-container-image-tag-${SHORT_SHA}
+        ./hub pull-request -b master -h feature/update-container-image-tag-${SHORT_SHA}
     volumes:
       - name: 'ssh'
         path: /root/.ssh
